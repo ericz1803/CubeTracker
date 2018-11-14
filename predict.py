@@ -19,6 +19,7 @@ categories = label_map_util.convert_label_map_to_categories(label_map, max_num_c
 category_index = label_map_util.create_category_index(categories)
 vids = glob('videos/*.mp4')
 
+# from here: https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
 def detect_objects(image_np, sess, detection_graph):
     # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
     image_np_expanded = np.expand_dims(image_np, axis=0)
@@ -90,7 +91,7 @@ for (i, vid) in enumerate(vids):
 
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
-        #put fps
+        #put fps (can change (0,0,0) to (255, 255, 255) if black text doesn't show up)
         frame = cv2.putText(frame, "{0:.1f}".format(fps), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), thickness=3)
         out.write(frame)
         cv2.imshow('Video', frame)
