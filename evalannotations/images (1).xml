@@ -1,0 +1,26 @@
+<annotation>
+	<folder>EvalImages</folder>
+	<filename>images (1).jpg</filename>
+	<path>C:\Users\Eric Zhou\Documents\Python\Computer Vision\Robotics\EvalImages\images (1).jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>300</width>
+		<height>168</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cube</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>79</xmin>
+			<ymin>69</ymin>
+			<xmax>164</xmax>
+			<ymax>161</ymax>
+		</bndbox>
+	</object>
+</annotation>

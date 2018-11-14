@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Images</folder>
+	<filename>IMG_8070.JPG</filename>
+	<path>C:\Users\Eric Zhou\Documents\Python\Computer Vision\CubeTracker\Images\IMG_8070.JPG</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>480</width>
+		<height>360</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cube</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>205</xmin>
+			<ymin>76</ymin>
+			<xmax>367</xmax>
+			<ymax>225</ymax>
+		</bndbox>
+	</object>
+</annotation>
