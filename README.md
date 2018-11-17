@@ -20,5 +20,12 @@ Windows (from cmd): `for /f %i in ('dir /b object_detection\protos\*.proto') do 
 7. When done training, run `./export.sh` again configuring the paths correctly, and also the name of the checkpoint correctly.
 8. Finally, run `python predict.py` to test it on some videos (put them in the `videos/` folder). 
 
+## Using `real_time.py`
+# Uses IP Webcam to provide data to the computer.
+1. Download IP Webcam (on phone).
+2. Set Video and Picture resolution to 480x360 (under video preferences).
+3. Press Start Server and make sure the IP address listed matches the one in the `real_time.py` file.
+4. Run `python real_time.py`.
+
 # Samples
 View them here: [google drive](https://drive.google.com/open?id=1MbbqhxA971yuk8MLRdDtXqKKvDo5kbgG)

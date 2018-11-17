@@ -1,6 +1,6 @@
 INPUT_TYPE=image_tensor
 PIPELINE_CONFIG_PATH=pipeline.config
-TRAINED_CKPT_PREFIX=train/model.ckpt-44097
+TRAINED_CKPT_PREFIX=train/model.ckpt-100000
 EXPORT_DIR=export/
 python object_detection/export_inference_graph.py \
     --input_type=${INPUT_TYPE} \
