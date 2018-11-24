@@ -19,8 +19,9 @@ categories = label_map_util.convert_label_map_to_categories(label_map, max_num_c
                                                             use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
-# from here: https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
+# mostly from here: https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
 def detect_objects(image_np, sess, detection_graph):
+    height, width, depth = image_np.shape
     # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
     image_np_expanded = np.expand_dims(image_np, axis=0)
     image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
@@ -38,17 +39,35 @@ def detect_objects(image_np, sess, detection_graph):
     (boxes, scores, classes, num_detections) = sess.run(
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
-
+    boxes = np.squeeze(boxes)
+    classes = np.squeeze(classes).astype(np.int32)
+    scores = np.squeeze(scores)
     # Visualization of the results of a detection.
     vis_util.visualize_boxes_and_labels_on_image_array(
         image_np,
-        np.squeeze(boxes),
-        np.squeeze(classes).astype(np.int32),
-        np.squeeze(scores),
+        boxes,
+        classes,
+        scores,
         category_index,
         use_normalized_coordinates=True,
         line_thickness=8)
-    return image_np
+
+    #return bounding boxes
+
+    bboxes = list()
+    num_detections = num_detections[0]
+    for (i, (box, score, _)) in enumerate(zip(boxes, scores, classes)):
+        if i > num_detections:
+            break
+        else:
+            if score > 0.5:
+                box[0] *= height
+                box[1] *= width
+                box[2] *= height
+                box[3] *= width
+                bboxes.append(box.astype(np.int32))
+    # bboxes are in format (ymin, xmin, ymax, xmax)
+    return bboxes, image_np
 
 
 detection_graph = tf.Graph()
@@ -61,8 +80,6 @@ with detection_graph.as_default():
 
     sess = tf.Session(graph=detection_graph)
 
-width = 480
-height = 360
 #fps tracking
 frame_num = 0
 last_time = time.time()
@@ -71,9 +88,11 @@ delta_time = 0
 done = False
 while not done:
     #replace with url provided by IP Webcam
+    #womewhere between 150-300ms latency
     resp = urllib.request.urlopen('http://192.168.1.76:8080/shot.jpg')
     frame = np.array(bytearray(resp.read()))
     frame = cv2.imdecode(frame, -1)
+    #frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
     #basically get a smoothed out version of the time between each frame and then take 1/delta_time for fps
     new_time = time.time()
     delta_time = (new_time - last_time) * (1 - smoothing) + (delta_time * smoothing)
@@ -82,8 +101,8 @@ while not done:
 
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     #bounding box using neural network
-    frame = detect_objects(frame, sess, detection_graph)
-
+    bboxes, frame = detect_objects(frame, sess, detection_graph)
+    print(bboxes)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
     #put fps (can change (0,0,0) to (255, 255, 255) if black text doesn't show up)
