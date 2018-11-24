@@ -66,7 +66,7 @@ def detect_objects(image_np, sess, detection_graph):
                 box[2] *= height
                 box[3] *= width
                 bboxes.append(box.astype(np.int32))
-    # bboxes are in format (ymin, xmin, ymax, xmax)
+    # bboxes = list of integer numpy arrays in format (ymin, xmin, ymax, xmax)
     return bboxes, image_np
 
 
